@@ -1,0 +1,20 @@
+python --version
+python -m pip install --upgrade pip
+pip install virtualenv
+
+virtualenv .
+
+
+cd Scripts\
+source ./activate
+
+
+cd Scripts\
+source ./deactivate
+
+
+flask run
+
+
+
+### obj = { nameProject:"", authors:["",""], totalLines: 0, totalClasses: 0, controllers: ["","",""], services:["","",""], microServicesSuggested: ["Decanatura", "Materia"] }
