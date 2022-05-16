@@ -29,20 +29,27 @@ class FileAnalyzer:
         self._data["microServicesSuggested"] = []
     
     def findFile(self, name, path, bFolder):
-        result = []
+        totalLines, result = 0, []
         for dirpath, dirname, filename in os.walk(path):
             if ( bFolder ):
                 if name in dirpath:
-                    return [os.path.join(dirpath, name), filename]
-            else:
-                
-                for n in filename:
-                    print(n, name,fnmatch.fnmatch(n, name))
+                    return filename
+            
+            for n in filename:
+                if fnmatch.fnmatch(n, name):
+                    print(dirpath,n, name,fnmatch.fnmatch(n, name))
                     print("")
-                    if fnmatch.fnmatch(n, name):
-                        result.append(n)
-                        
-        return result
+
+                    d = dirpath.replace("\\","/")+"/"+n
+                    print(d)
+                    print("")
+                    with open(d) as fp:
+                        lines = len(fp.readlines())
+                        print(lines, totalLines)
+                        totalLines+=lines
+                    result.append(n)
+        
+        return [totalLines,result]
 
     def getCommands(self):
         return ["git clone "+self._url]
@@ -58,16 +65,23 @@ class FileAnalyzer:
             print("\n")
         except:
             print("The project already exits")
+    
+    def removeProject(self):
+        command = "rm -r "+self._nameProject
+        os.system(command)
 
     def createInformation(self):
         self.startDownload()
 
-        controllers = self.findFile("controller", self._path, True)[1]
-        services = self.findFile("service", self._path, True)[1]
-        totalClasses = self.findFile("*.java", self._path, False)
+        controllers = self.findFile("controller", self._path, True)
+        services = self.findFile("service", self._path, True)
+        totalLines, totalClasses = self.findFile("*.java", self._path, False)
 
         self._data["controllers"] = controllers
         self._data["services"] = services
         self._data["totalClasses"] = len(totalClasses)
+        self._data["totalLines"] = totalLines
 
+        """ self.removeProject() """
+        
         return self._data
