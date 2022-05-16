@@ -1,105 +1,41 @@
 from flask_restful import Resource, reqparse, abort
 import sys
 sys.path.append(".")
-from Graph.graph import Graph
+from FileAnalyzer.file_analyzer import FileAnalyzer
 
 # Configuramos los parámetros del necesarios para crear un grafo
 graph_put_args = reqparse.RequestParser()
-graph_put_args.add_argument("start", type=int, help="Start node is required", required=True)
-graph_put_args.add_argument("goal", type=int, help="Goal node is required", required=True)
-graph_put_args.add_argument("edges", type=str, help="Edges are required", required=True)
+graph_put_args.add_argument("url", type=str, help="URL is required", required=True)
 
-temp_graph = []
-
-
-class GraphApi(Resource):
+class FileAnalyzerApi(Resource):
     def __init__(self):
-        # Arcos
-        self._arcs = []
+        # URL
+        self._url = None
 
-        # Nodo inicial
-        self._start = None
-
-        # Nodo final
-        self._goal = None
-
-        # Instancia de la clase 'Graph'
-        self._g_instance = None
-
-        # Mensaje de respuesta al usuario
         self._data = None
-
 
     # Getters y setters
     @property
-    def arcs(self):
+    def url(self):
         '''
-        Getter de la variable 'arcs'.
-        :return: La variable 'arcs'
+        Getter de la variable 'url'.
+        :return: La variable 'ur;'
         '''
-        return self._arcs
+        return self._url
 
-    @arcs.setter
-    def arcs(self, arcs):
+    @url.setter
+    def url(self, url):
         '''
-            Setter de la variable 'arcs'.
+            Setter de la variable 'url'.
             :return: None
         '''
-        self._arcs = arcs
-
-    @property
-    def start(self):
-        '''
-            Getter de la variable 'start'.
-            :return: La variable 'start'
-        '''
-        return self._start
-
-    @start.setter
-    def start(self, start):
-        '''
-            Setter de la variable 'start'.
-            :return: None
-        '''
-        self._start = start
-
-    @property
-    def goal(self):
-        '''
-            Getter de la variable 'goal'.
-            :return: La variable 'goal'
-        '''
-        return self._goal
-
-    @goal.setter
-    def goal(self, goal):
-        '''
-            Setter de la variable 'goal'.
-            :return: None
-        '''
-        self._goal = goal
-
-    @property
-    def g_instance(self):
-        '''
-            Getter de la variable 'g_instance'.
-            :return: La variable 'g_instance'
-        '''
-        return self._g_instance
-
-    @g_instance.setter
-    def g_instance(self, g_instance):
-        '''
-            Setter de la variable 'g_instance'.
-            :return: None
-        '''
-        self._g_instance = g_instance
+        self._url = url
 
     @property
     def data(self):
         '''
-            Getter de la variable 'data'.
-            :return: La variable 'data'
+        Getter de la variable 'data'.
+        :return: La variable 'ur;'
         '''
         return self._data
 

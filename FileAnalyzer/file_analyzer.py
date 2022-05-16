@@ -6,7 +6,7 @@ BLACK = 'black'
 GRAY = 'gray'
 
 
-class Graph:
+class FileAnalyzer:
     def __init__(self, v):
         self.v = v
         self.goal = v
