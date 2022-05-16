@@ -32,22 +32,23 @@ class FileAnalyzer:
         totalLines, result = 0, []
         for dirpath, dirname, filename in os.walk(path):
             if ( bFolder ):
-                if name in dirpath:
+                print(self._nameProject, dirpath,self._nameProject in dirpath)
+                if  (name in dirpath):
                     return filename
-            
-            for n in filename:
-                if fnmatch.fnmatch(n, name):
-                    print(dirpath,n, name,fnmatch.fnmatch(n, name))
-                    print("")
+            elif (self._nameProject in dirpath):
+                for n in filename:
+                    if fnmatch.fnmatch(n, name):
+                        print(dirpath,n, name,fnmatch.fnmatch(n, name))
+                        print("")
 
-                    d = dirpath.replace("\\","/")+"/"+n
-                    print(d)
-                    print("")
-                    with open(d) as fp:
-                        lines = len(fp.readlines())
-                        print(lines, totalLines)
-                        totalLines+=lines
-                    result.append(n)
+                        d = dirpath.replace("\\","/")+"/"+n
+                        """ print(d)
+                        print("") """
+                        with open(d) as fp:
+                            lines = len(fp.readlines())
+                            """ print(lines, totalLines) """
+                            totalLines+=lines
+                        result.append(n)
         
         return [totalLines,result]
 
@@ -70,8 +71,20 @@ class FileAnalyzer:
         command = "rm -r "+self._nameProject
         os.system(command)
 
+    def getMicroservicesName(self):
+        microServices = []
+        for controller in self._data["controllers"]:
+            c = controller.lower()
+            c = c.replace(".java", "")
+            c = c.replace("controller","")
+            c = c.replace("api","")
+
+            microServices.append(c)
+        return microServices
+            
     def createInformation(self):
         self.startDownload()
+        self.setProperties()
 
         controllers = self.findFile("controller", self._path, True)
         services = self.findFile("service", self._path, True)
@@ -81,7 +94,7 @@ class FileAnalyzer:
         self._data["services"] = services
         self._data["totalClasses"] = len(totalClasses)
         self._data["totalLines"] = totalLines
+        self._data["microServicesSuggested"] = self.getMicroservicesName()
 
         """ self.removeProject() """
-        
         return self._data

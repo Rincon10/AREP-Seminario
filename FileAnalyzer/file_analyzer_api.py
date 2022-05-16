@@ -92,11 +92,11 @@ class FileAnalyzerApi(Resource):
         # We save the URL
         self.url = args["url"]
 
+        self.f_instance = None
+
     def start(self):
         # We create an instance of the FileAnalyzer object
         self.f_instance = FileAnalyzer(self.url)
 
         # We create the object response 
-        self.data = self.f_instance.createInformation()
-    
-        
+        self.data = self.f_instance.createInformation()    
