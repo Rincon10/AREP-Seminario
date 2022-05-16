@@ -3,7 +3,6 @@ import sys
 sys.path.append(".")
 from FileAnalyzer.file_analyzer import FileAnalyzer
 
-# Configuramos los parámetros del necesarios para crear un grafo
 graph_put_args = reqparse.RequestParser()
 graph_put_args.add_argument("url", type=str, help="URL is required", required=True)
 
@@ -12,7 +11,12 @@ class FileAnalyzerApi(Resource):
         # URL
         self._url = None
 
+        # File Analyzer instance
+        self._f_instance = None
+
+        # Response
         self._data = None
+
 
     # Getters y setters
     @property
@@ -30,6 +34,22 @@ class FileAnalyzerApi(Resource):
             :return: None
         '''
         self._url = url
+
+    @property
+    def f_instance(self):
+        '''
+        Getter de la variable 'f_instance'.
+        :return: La variable 'ur;'
+        '''
+        return self._f_instance
+
+    @f_instance.setter
+    def f_instance(self, f_instance):
+        '''
+            Setter de la variable 'f_instance'.
+            :return: None
+        '''
+        self._f_instance = f_instance
 
     @property
     def data(self):
@@ -54,63 +74,29 @@ class FileAnalyzerApi(Resource):
         :return: Un JSON con los arcos del grafo.
         '''
 
-        return {"data": "Graph API working..."}
+        return {"data": "File Analyzer API working..."}
 
     def put(self):
-        '''
-        Función encargada de recibir los datos necesarios para crear un grafo.
-        Los recibe en formato JSON cuando se hace una petición PUT al endpoint.
-        :return: Una tupla de la forma (num_personas_necesarias, [lista_de_personas_necesarias])
-        '''
         # Verificamos que cumpla con los datos que necesitamos
         args = graph_put_args.parse_args()
 
         # Función encargada de tratar la entrada
         self.clean_data(args)
 
-        # Iniciamos el grafo
-        self.start_graph()
-
-        # Le damos formato al JSON de respuesta
-        self.data = {
-            "distance": self.data[0],
-            "nodes": self.data[1]
-        }
+        # We call the file analyzer logiv
+        self.start()
 
         return self.data, 201
 
     def clean_data(self, args):
-        # Guardamos el inicio y el objetivo
-        self.start = args['start']
-        self.goal = args['goal']
+        # We save the URL
+        self.url = args["url"]
 
-        # Separamos los arcos por parejas
-        edges = args['edges'].split(',')
+    def start(self):
+        # We create an instance of the FileAnalyzer object
+        self.f_instance = FileAnalyzer(self.url)
 
-        # Separamos cada pareja
-        edges = [tuple(map(int, edge.split('-'))) for edge in edges]
-
-        # Guardamos los arcos en su variable respectiva
-        self.arcs = edges
-
-        # Modificamos la variable global
-        for el in self.arcs:
-            temp_graph.append(el)
-
-    def delete(self):
-        temp_graph.clear()
-        return {"message": "Arcos borrados satisfactoriamente"}
-
-    def are_arcs_empty(self):
-        if len(temp_graph) == 0:
-            abort(404, message="No se puede consultar un grafo sin nodos")
-
-    def start_graph(self):
-        self.g_instance = Graph(self.goal + 1)
-
-        # Agregamos los arcos al grafo
-        for pair in self.arcs:
-            self.g_instance.add_edge(pair[0], pair[1])
-
-        # Buscamos la cantidad de personas necesarias para llegar de 'start' a 'goal'
-        self.data = self.g_instance.find_love(self.start, self.goal)
+        # We create the object response 
+        self.data = self.f_instance.createInformation()
+    
+        
