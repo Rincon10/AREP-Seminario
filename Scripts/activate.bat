@@ -1,6 +1,6 @@
 @echo off
 
-set "VIRTUAL_ENV=C:\Users\camil\Desktop\final-ayed-backend"
+set "VIRTUAL_ENV=C:\Users\camil\Desktop\Seminario-AREP"
 
 if defined _OLD_VIRTUAL_PROMPT (
     set "PROMPT=%_OLD_VIRTUAL_PROMPT%"

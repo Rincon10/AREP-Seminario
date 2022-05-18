@@ -8,6 +8,7 @@ virtualenv .
 cd Scripts\
 source ./activate
 
+pip install -r requirements.txt
 
 cd Scripts\
 source ./deactivate

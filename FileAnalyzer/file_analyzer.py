@@ -17,17 +17,23 @@ class FileAnalyzer:
         # Object Properties
         self._properties = ["nameProject","authors","totalLines","totalClasses","controllers","services","microServicesSuggested"]
 
+        # Titles
+        self._titles = ["Nombre del proyecto","Autores","Total de líneas de codigo","Total de clases","Total de controladores", "Total de servicios","Número de los microservicios sugeridos"]
+
+
         # Default data
         self.setProperties()
 
 
     def setProperties(self):
+        i = 0
         for property in self._properties:
-            self._data[property] = ([] if property[-1].strip() == "s" and ("total" not in property) else 0 )
+            obj = { "title": self._titles[i], "value": "" }
+            self._data[property] = obj
+            i+=1
 
-        self._data["nameProject"] = self._nameProject
-        self._data["microServicesSuggested"] = []
-    
+        self._data["nameProject"]["value"] = self._nameProject
+
     def findFile(self, name, path, bFolder):
         totalLines, result = 0, []
         for dirpath, dirname, filename in os.walk(path):
@@ -72,15 +78,13 @@ class FileAnalyzer:
         os.system(command)
 
     def getMicroservicesName(self):
-        microServices = []
-        for controller in self._data["controllers"]:
-            c = controller.lower()
-            c = c.replace(".java", "")
-            c = c.replace("controller","")
-            c = c.replace("api","")
+        
+        c = self._data["controllers"]["value"].lower()
+        c = c.replace(".java", "")
+        c = c.replace("controller","")
+        c = c.replace("api","")
 
-            microServices.append(c)
-        return microServices
+        return c
             
     def createInformation(self):
         self.startDownload()
@@ -90,11 +94,11 @@ class FileAnalyzer:
         services = self.findFile("service", self._path, True)
         totalLines, totalClasses = self.findFile("*.java", self._path, False)
 
-        self._data["controllers"] = controllers
-        self._data["services"] = services
-        self._data["totalClasses"] = len(totalClasses)
-        self._data["totalLines"] = totalLines
-        self._data["microServicesSuggested"] = self.getMicroservicesName()
+        self._data["controllers"]["value"] = ", ".join(controllers)
+        self._data["services"]["value"] = ", ".join(services)
+        self._data["totalClasses"]["value"] = len(totalClasses)
+        self._data["totalLines"]["value"] = totalLines
+        self._data["microServicesSuggested"]["value"] = self.getMicroservicesName()
 
         """ self.removeProject() """
         return self._data

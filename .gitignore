@@ -1,4 +1,7 @@
 # Byte-compiled / optimized / DLL files
+U-Cord/
+SAOKO-back/
+
 __pycache__/
 *.py[cod]
 *$py.class
