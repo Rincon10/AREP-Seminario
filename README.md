@@ -1,5 +1,7 @@
 # Backend AREP
 
+Check the [Front-end implementation](https://github.com/juancho20sp/final-arep-front).
+
 ## What is this?
 
 This is a repository for all the files used to create a backend with flask in order to connect our functions with a simple JavaScript web application
