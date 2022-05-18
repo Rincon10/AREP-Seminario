@@ -108,6 +108,10 @@ pip install -r requirements.txt
 }
 ```
 
+### Request
+
+<img src="./resources/example00-front-screen-2.png" />
+
 ### Back-end Response
 
 <img src="./resources/example01.png" />
@@ -116,6 +120,9 @@ pip install -r requirements.txt
 
 <img src="./resources/example01-f.png" />
 
+<br />
+<br />
+
 2. Using the repository
 ```js
 {
@@ -123,13 +130,20 @@ pip install -r requirements.txt
 }
 ```
 
+### Request
+
+<img src="./resources/example00-front-screen.png" />
+
 ### Back-end Response
 
-<img src="./resources/example02-f.png" />
+<img src="./resources/example02.png" />
 
 ### Front-end Response
 
-<img src="./resources/example02.png" />
+<img src="./resources/example02-f.png" />
+
+<br />
+<br />
 
 ## Built With
 
