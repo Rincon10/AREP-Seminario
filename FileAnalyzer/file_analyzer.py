@@ -15,10 +15,10 @@ class FileAnalyzer:
         self._path = os.getcwd()
 
         # Object Properties
-        self._properties = ["nameProject","authors","totalLines","totalClasses","controllers","services","microServicesSuggested"]
+        self._properties = ["nameProject","authors","totalLines","totalClasses","controllers","services", "numOfmicroServices" ,"microServicesSuggested"]
 
         # Titles
-        self._titles = ["Nombre del proyecto","Autores","Total de líneas de codigo","Total de clases","Total de controladores", "Total de servicios","Número de los microservicios sugeridos"]
+        self._titles = ["Nombre del proyecto","Autores","Total de líneas de codigo","Total de clases","Controladores", "Servicios","Número de los microservicios sugeridos", "Nombre de los microservicios sugeridos"]
 
 
         # Default data
@@ -94,11 +94,15 @@ class FileAnalyzer:
         services = self.findFile("service", self._path, True)
         totalLines, totalClasses = self.findFile("*.java", self._path, False)
 
-        self._data["controllers"]["value"] = ", ".join(controllers)
-        self._data["services"]["value"] = ", ".join(services)
+        self._data["controllers"]["value"] = ", ".join(controllers).replace(".java","")
+        self._data["services"]["value"] = ", ".join(services).replace(".java","")
         self._data["totalClasses"]["value"] = len(totalClasses)
         self._data["totalLines"]["value"] = totalLines
-        self._data["microServicesSuggested"]["value"] = self.getMicroservicesName()
+
+        m = self.getMicroservicesName()
+
+        self._data["microServicesSuggested"]["value"] = m
+        self._data["numOfmicroServices"]["value"] = len(m.split(","))
 
         """ self.removeProject() """
         return self._data
